@@ -49,7 +49,10 @@ void loop() {
     return;
   }
 
-  /* printing the reading bytes from the FIFO to serial monitor */ 
+  /* printing the reading bytes from the FIFO to serial monitor */
+  /* why 16? as it only read 16 bytes of data. but as we give the buffer size of 18
+  ** so it will add the dummy variables to the reading values so we reduce the size to 16.
+  ** also for 16bytes minimum 2 bytes more size of buffer required to hold start and stop bit in FIFO */
   for(uint8_t i = 0; i < 16;i++){
     if(buffer[i] != 16)
     {
