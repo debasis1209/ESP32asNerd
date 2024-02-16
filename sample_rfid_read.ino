@@ -29,9 +29,9 @@ void loop() {
   Serial.println(F("**Card Detected:**"));
   Serial.print(F("ID is: "));
   
-  byte buffer[20];                                  /* setting the buffer size to read from FIFO from the NFC tag */
+  byte buffer[18];                                  /* setting the buffer size to read from FIFO from the NFC tag */
   block = 4;                                        /* setting the block to read */      
-  len = 20;                                        /* length of data to read */
+  len = 18;                                        /* length of data to read */
 
   /* checking the status of authentication with key B using local instance key */
   status = rfid.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_B, 4, &key, &(rfid.uid));          
@@ -50,8 +50,8 @@ void loop() {
   }
 
   /* printing the reading bytes from the FIFO to serial monitor */ 
-  for(uint8_t i = 0; i < len;i++){
-    if(buffer[i] != 20)
+  for(uint8_t i = 0; i < 16;i++){
+    if(buffer[i] != 16)
     {
       Serial.write(buffer[i]);
     }
