@@ -32,14 +32,14 @@ void loop() {
   MFRC522::PICC_Type picctype = rfid.PICC_GetType(rfid.uid.sak);
   Serial.println(rfid.PICC_GetTypeName(picctype));
 
-  byte buffer[20];                                            /* buffer to save data before load to nfc tag */
+  byte buffer[18];                                            /* buffer to save data before load to nfc tag.NOTE: for each 16bytes 2 bytes extra required for start and stop byte */
   byte block;                                                  /* selecting the block in nfc tag to load */
   MFRC522::StatusCode status;                                 /* instance to check the status of authentication and writing */
   byte len;                                                  /* length of data to load */
 
   Serial.setTimeout(20000L);                                  /* set timeout for write some data from serial */
   len = Serial.readBytesUntil('#',(char*)buffer,16);          /* finding the length of the data actually consumed from the serial for user.NOTE: if you want refer ACII table */
-  for(byte i = len; i < 16;i++) buffer[i] = '0';              /* rest of the assigned bytes will be padded by zeroes */
+  for(byte i = len; i < 16;i++) buffer[i] = ' ';              /* rest of the assigned bytes will be padded by zeroes */
 
   block = 4;                                                  /* selecting block 4 to write */
   /* checking the status of authentication for writing using key B */
@@ -58,26 +58,7 @@ void loop() {
     Serial.print(rfid.GetStatusCodeName(status));
     return;
   }
-  else Serial.println("writing authentication successful to the nfc tag at block 1.");
-
-  /*
-  block = 5;
-  status = rfid.PCD_Authenticate(MFRC522::PICC_CMD_MF_AUTH_KEY_B, block, &key, &(rfid.uid));
-  if(status != MFRC522::STATUS_OK){
-    Serial.print(F("PICC authentication failed with key B."));
-    Serial.println(rfid.GetStatusCodeName(status));
-    return;
-  }
-  else Serial.println("reader authentication success with key B.");
-
-  status = rfid.MIFARE_Write(block, &buffer[16], 16);
-  if(status != MFRC522::STATUS_OK){
-    Serial.print(F("Write Operation failed."));
-    Serial.print(rfid.GetStatusCodeName(status));
-    return;
-  }
-  else Serial.println("writing authentication successful to the nfc tag at block 1.");
-  */
+  else Serial.println("writing authentication successful to the nfc tag at block 4.");
 
   rfid.PICC_HaltA();        /* halt the PICC */
   rfid.PCD_StopCrypto1();    /* halt the PCD */
