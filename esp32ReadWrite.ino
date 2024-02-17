@@ -34,6 +34,7 @@ void loop() {
 
 }
 
+/* Reading of data from the tag.Note: to understand the code refer: "sample_rfid_read.ino" in ESP32asNerd. */ 
 void data_read(){
   MFRC522::MIFARE_Key key;
   for(byte i = 0; i < 6;i++) key.keyByte[i] = 0xff;
@@ -77,9 +78,10 @@ void data_read(){
   delay(1000);
   rfid.PICC_HaltA();
   rfid.PCD_StopCrypto1();
-  while(1){};
+  while(1){};                                                /* stuck it in infinity while loop. so that it will not go to loop again. */
 }
 
+/* Writing the data to the tag.Note: to understand the code refer: "sample_rfid_write.ino" in ESP32asNerd. */
 void data_write(){
   MFRC522::MIFARE_Key key;
   for(byte i = 0; i < 6;i++) key.keyByte[i] = 0xff;
@@ -124,5 +126,5 @@ void data_write(){
   else Serial.println("writing authentication successful to the nfc tag at block 1.");
   rfid.PICC_HaltA();
   rfid.PCD_StopCrypto1();
-  while(1){};
+  while(1){};                                                                    /* stuck it in infinity while loop. so that it will not go to loop again. */
 }
