@@ -59,7 +59,7 @@ void loop() {
     return;
   }
   else Serial.println("writing authentication successful to the nfc tag at block 4.");
-
+  rfid.PICC_DumpToSerial(&(rfid.uid));
   rfid.PICC_HaltA();        /* halt the PICC */
   rfid.PCD_StopCrypto1();    /* halt the PCD */
 }
